@@ -1,26 +1,33 @@
 repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.2
+  - repo: local
     hooks:
       - id: ruff
-        args: [--fix]
+        name: ruff
+        language: system
+        entry: uv run ruff check --fix
+        types: [python]
+
       - id: ruff-format
+        name: ruff-format
+        language: system
+        entry: uv run ruff format
+        types: [python]
 
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.15.0
-    hooks:
       - id: mypy
-        additional_dependencies: [pydantic, sqlalchemy]
+        name: mypy
+        language: system
+        entry: uv run mypy app
+        types: [python]
+        pass_filenames: false
 
-  - repo: https://github.com/ljnsn/cz-conventional-gitmoji
-    rev: 0.7.0
-    hooks:
-      - id: conventional-gitmoji
+      - id: gitmojify
+        name: gitmojify
+        language: system
+        entry: uv run gitmojify -f
         stages: [commit-msg]
 
-  - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.4.1
-    hooks:
       - id: commitizen
+        name: commitizen
+        language: system
+        entry: uv run cz check --allow-abort --commit-msg-file
         stages: [commit-msg]
-        additional_dependencies: [cz-conventional-gitmoji]

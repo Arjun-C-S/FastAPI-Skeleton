@@ -8,7 +8,7 @@ from app.core.config import settings
 from app.core.exception_handlers import register_exception_handlers
 from app.db.redis import connect_redis, disconnect_redis
 from app.middleware.logging import RequestLoggingMiddleware, configure_logging
-from app.schemas.response import ApiResponse
+from app.schemas.response import ApiResponse, HealthData
 
 
 @asynccontextmanager
@@ -40,10 +40,10 @@ app.add_middleware(RequestLoggingMiddleware)
 register_exception_handlers(app)
 
 
-@app.get("/health", response_model=ApiResponse)
-async def health() -> ApiResponse:
-    return ApiResponse[dict[str, str]](
+@app.get("/health", response_model=ApiResponse[HealthData])
+async def health() -> ApiResponse[HealthData]:
+    return ApiResponse[HealthData](
         success=True,
         message="Server is running",
-        data={"env": settings.APP_ENV},
+        data=HealthData(env=settings.APP_ENV),
     )

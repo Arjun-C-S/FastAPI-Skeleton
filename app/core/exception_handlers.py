@@ -1,9 +1,11 @@
 import logging
 from http import HTTPStatus
+from typing import cast
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from starlette.types import ExceptionHandler
 
 from app.core.exceptions import AppException
 from app.middleware.logging import REQUEST_ID_HEADER, get_request_id
@@ -13,8 +15,12 @@ logger = logging.getLogger(__name__)
 
 
 def register_exception_handlers(app: FastAPI) -> None:
-    app.add_exception_handler(AppException, app_exception_handler)
-    app.add_exception_handler(RequestValidationError, validation_exception_handler)
+    app.add_exception_handler(
+        AppException, cast(ExceptionHandler, app_exception_handler)
+    )
+    app.add_exception_handler(
+        RequestValidationError, cast(ExceptionHandler, validation_exception_handler)
+    )
     app.add_exception_handler(Exception, unhandled_exception_handler)
 
 

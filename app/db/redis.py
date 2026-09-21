@@ -6,6 +6,8 @@ redis_client: Redis | None = None
 
 
 async def get_redis() -> Redis:
+    if redis_client is None:
+        raise RuntimeError("Redis is not connected")
     return redis_client
 
 

@@ -1,6 +1,10 @@
 from pydantic import BaseModel
 
 
+class HealthData(BaseModel):
+    env: str
+
+
 class ApiResponse[T](BaseModel):
     success: bool
     message: str

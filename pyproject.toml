@@ -47,6 +47,7 @@ known-first-party = ["app"]
 python_version = "3.13"
 strict = true
 ignore_missing_imports = true
+plugins = ["pydantic.mypy"]
 
 [tool.commitizen]
 name = "cz_gitmoji"
